@@ -66,7 +66,7 @@ public abstract class EntityRenderersMixin {
 
 		return entityRenderer;
 	}
-	 */
+
 
 	// private static synthetic method_32175(Lcom/google/common/collect/ImmutableMap$Builder;Lnet/minecraft/class_5617$class_5618;Ljava/lang/String;Lnet/minecraft/class_5617;)V
 	@SuppressWarnings({"unchecked", "rawtypes"})
@@ -79,4 +79,5 @@ public abstract class EntityRenderersMixin {
 
 		return entityRenderer;
 	}
+	 */
 }
