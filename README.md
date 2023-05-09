@@ -1,3 +1,3 @@
-# ArchitecturyTemplateMod-Forge
+# ForgedAPI
 
-These Templates are [Architectury Templates](https://github.com/architectury/architectury-templates) Fork (Only Forge).
+Re-implement little part of the Fabric API on Forge.
