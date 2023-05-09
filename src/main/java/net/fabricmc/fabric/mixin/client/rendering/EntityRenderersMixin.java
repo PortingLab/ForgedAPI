@@ -53,6 +53,7 @@ public abstract class EntityRenderersMixin {
 	}
 
 	// synthetic lambda in reloadEntityRenderers
+	/*
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Redirect(method = "method_32174", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/EntityRendererFactory;create(Lnet/minecraft/client/render/entity/EntityRendererFactory$Context;)Lnet/minecraft/client/render/entity/EntityRenderer;"))
 	private static EntityRenderer<?> createEntityRenderer(EntityRendererFactory<?> entityRendererFactory, EntityRendererFactory.Context context, ImmutableMap.Builder builder, EntityRendererFactory.Context context2, EntityType<?> entityType) {
@@ -65,6 +66,7 @@ public abstract class EntityRenderersMixin {
 
 		return entityRenderer;
 	}
+	 */
 
 	// private static synthetic method_32175(Lcom/google/common/collect/ImmutableMap$Builder;Lnet/minecraft/class_5617$class_5618;Ljava/lang/String;Lnet/minecraft/class_5617;)V
 	@SuppressWarnings({"unchecked", "rawtypes"})
