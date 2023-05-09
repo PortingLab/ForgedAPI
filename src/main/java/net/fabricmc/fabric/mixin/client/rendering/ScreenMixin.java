@@ -32,6 +32,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 @Mixin(Screen.class)
 public class ScreenMixin {
 	// Synthetic lambda body in renderTooltip
+	/*
 	@Inject(at = @At("HEAD"), method = "method_32635(Ljava/util/List;Lnet/minecraft/client/item/TooltipData;)V", cancellable = true)
 	private static void injectRenderTooltipLambda(List<TooltipComponent> components, TooltipData data, CallbackInfo ci) {
 		TooltipComponent component = TooltipComponentCallback.EVENT.invoker().getComponent(data);
@@ -41,4 +42,6 @@ public class ScreenMixin {
 			ci.cancel();
 		}
 	}
+
+	 */
 }
