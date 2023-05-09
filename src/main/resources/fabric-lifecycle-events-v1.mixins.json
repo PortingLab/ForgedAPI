@@ -1,0 +1,29 @@
+{
+  "required": true,
+  "package": "net.fabricmc.fabric.mixin.event.lifecycle",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "DataPackContentsMixin",
+    "LivingEntityMixin",
+    "MinecraftServerMixin",
+    "PlayerManagerMixin",
+    "ServerWorldMixin",
+    "ServerWorldServerEntityHandlerMixin",
+    "ThreadedAnvilChunkStorageMixin",
+    "WorldMixin"
+  ],
+  "client": [
+    "client.ClientChunkManagerMixin",
+    "client.ClientPlayNetworkHandlerMixin",
+    "client.ClientWorldClientEntityHandlerMixin",
+    "client.ClientWorldMixin",
+    "client.MinecraftClientMixin"
+  ],
+  "server": [
+
+  ],
+  "injectors": {
+    "defaultRequire": 1,
+    "maxShiftBy": 3
+  }
+}
