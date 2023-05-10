@@ -6,12 +6,12 @@ license = "Apache-2.0"
 modId = "forgedapi"
 version = "${version}"
 displayName = "ForgedAPI"
-displayURL="https://changeme.dev/" #optional
+displayURL="https://github.com/PortingLab/ForgedAPI" #optional
 logoFile= "icon.png" #optional
 credits="FabricMC" #optional
 authors="PortingLab" #optional
 description = '''
-Fabric API Base & Fabric Lifecycle Event unofficial Forge port.
+Fabric API unofficial Forge port.
 
 Contains the essentials for Fabric API modules.
 '''
