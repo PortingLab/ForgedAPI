@@ -16,9 +16,7 @@
 
 package net.fabricmc.fabric.mixin.client.rendering;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -34,9 +32,7 @@ import net.fabricmc.fabric.impl.client.rendering.ColorProviderRegistryImpl;
 
 @Mixin(ItemColors.class)
 public class MixinItemColorMap implements ColorProviderRegistryImpl.ColorMapperHolder<ItemConvertible, ItemColorProvider> {
-	@Shadow
-	@Final
-	private IdList<ItemColorProvider> providers;
+	private final IdList<ItemColorProvider> providers = new IdList<>();
 
 	@Inject(method = "create", at = @At("RETURN"))
 	private static void create(BlockColors blockMap, CallbackInfoReturnable<ItemColors> info) {
