@@ -131,6 +131,7 @@ public abstract class MixinWorldRenderer {
 		WorldRenderEvents.BEFORE_DEBUG_RENDER.invoker().beforeDebugRender(context);
 	}
 
+	/*
 	@Inject(
 			method = "render",
 			at = @At(
@@ -142,6 +143,7 @@ public abstract class MixinWorldRenderer {
 		// set a flag so we know the next pushMatrix call is after particles
 		didRenderParticles = true;
 	}
+	 */
 
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;push()V"))
 	private void beforeClouds(CallbackInfo ci) {
