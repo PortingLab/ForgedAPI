@@ -16,8 +16,6 @@
 
 package net.fabricmc.fabric.api.client.rendering.v1;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.render.DimensionEffects;
@@ -26,6 +24,8 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import net.fabricmc.fabric.impl.client.rendering.DimensionRenderingRegistryImpl;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * Dimensional renderers render world specific visuals of a world.

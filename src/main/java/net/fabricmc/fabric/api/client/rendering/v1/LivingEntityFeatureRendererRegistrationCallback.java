@@ -16,8 +16,6 @@
 
 package net.fabricmc.fabric.api.client.rendering.v1;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.ApiStatus;
 
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -30,6 +28,8 @@ import net.minecraft.entity.LivingEntity;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * Called when {@link FeatureRenderer feature renderers} for a {@link LivingEntityRenderer living entity renderer} are registered.
@@ -39,7 +39,7 @@ import net.fabricmc.fabric.api.event.EventFactory;
  * Listeners should filter out the specific entity renderer they want to hook into, usually through {@code instanceof} checks or filtering by entity type.
  * Once listeners find a suitable entity renderer, they should register their feature renderer via the registration helper.
  *
- * <p>For example, to register a feature renderer for a player model, the example below may be used:
+ * <p>For example, to register a feature renderer for a player model, the example below may used:
  * <blockquote><pre>
  * LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, entityRenderer, registrationHelper) -> {
  * 	if (entityRenderer instanceof PlayerEntityModel) {

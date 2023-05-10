@@ -4,23 +4,23 @@
   "compatibilityLevel": "JAVA_16",
   "mixins": [
     "DataPackContentsMixin",
-    "LivingEntityMixin",
     "MinecraftServerMixin",
     "PlayerManagerMixin",
+    "ServerWorldEntityLoaderMixin",
     "ServerWorldMixin",
-    "ServerWorldServerEntityHandlerMixin",
     "ThreadedAnvilChunkStorageMixin",
     "WorldMixin"
   ],
   "client": [
     "client.ClientChunkManagerMixin",
     "client.ClientPlayNetworkHandlerMixin",
-    "client.ClientWorldClientEntityHandlerMixin",
+    "client.ClientWorldEntityLoaderMixin",
     "client.ClientWorldMixin",
-    "client.MinecraftClientMixin"
+    "client.MinecraftClientMixin",
+    "client.WorldChunkMixin"
   ],
   "server": [
-
+    "server.WorldChunkMixin"
   ],
   "injectors": {
     "defaultRequire": 1,

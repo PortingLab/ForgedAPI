@@ -27,7 +27,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public final class ClientTickEvents {
-	private ClientTickEvents() {
+	public ClientTickEvents() {
 	}
 
 	/**

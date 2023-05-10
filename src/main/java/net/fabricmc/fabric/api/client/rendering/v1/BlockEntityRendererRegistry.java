@@ -28,12 +28,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * Helper class for registering BlockEntityRenderers.
- *
- * <p>Use {@link net.minecraft.client.render.block.entity.BlockEntityRendererFactories#register(BlockEntityType, BlockEntityRendererFactory)} instead.
- *
- * @deprecated Replaced with transitive access wideners in Fabric Transitive Access Wideners (v1).
  */
-@Deprecated
 @OnlyIn(Dist.CLIENT)
 public final class BlockEntityRendererRegistry {
 	/**

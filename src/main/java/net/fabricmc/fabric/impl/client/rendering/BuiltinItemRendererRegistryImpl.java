@@ -20,8 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.item.Item;
@@ -30,6 +28,8 @@ import net.minecraft.util.registry.Registry;
 
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public final class BuiltinItemRendererRegistryImpl implements BuiltinItemRendererRegistry {
@@ -61,11 +61,8 @@ public final class BuiltinItemRendererRegistryImpl implements BuiltinItemRendere
 		}
 	}
 
-	@Override
 	@Nullable
-	public DynamicItemRenderer get(ItemConvertible item) {
-		Objects.requireNonNull(item.asItem(), "item is null");
-
-		return RENDERERS.get(item.asItem());
+	public static DynamicItemRenderer getRenderer(Item item) {
+		return RENDERERS.get(item);
 	}
 }

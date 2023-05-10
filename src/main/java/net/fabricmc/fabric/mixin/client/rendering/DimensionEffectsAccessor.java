@@ -17,13 +17,14 @@
 package net.fabricmc.fabric.mixin.client.rendering;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 import net.minecraft.client.render.DimensionEffects;
 import net.minecraft.util.Identifier;
+
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @Mixin(DimensionEffects.class)

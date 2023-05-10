@@ -27,7 +27,6 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 public final class LifecycleEventsImpl {
-
 	public static void onInitialize(FMLCommonSetupEvent event) {
 		// Part of impl for block entity events
 		ServerChunkEvents.CHUNK_LOAD.register((world, chunk) -> {

@@ -27,7 +27,7 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     forge "net.minecraftforge:forge:${project.forge_version}"
 
-    modImplementation "maven.modrinth:reforgium:1.19.2-1.0.12a"
+    modImplementation "maven.modrinth:reforgium:1.18.2-1.0.12a"
 }
 
 processResources {
