@@ -39,8 +39,10 @@ public abstract class MixinClonedChunkSection implements LocalRenderAttachedBloc
 		indium_renderDataObjects = null;
 	}
 
-	@Inject(at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/longs/Long2ObjectOpenHashMap;put(JLjava/lang/Object;)Ljava/lang/Object;"), method = "init", locals = LocalCapture.CAPTURE_FAILHARD, remap = false)
-	private void indium_onBlockEntity(ChunkSectionPos pos, CallbackInfo ci, WorldChunk chunk, ChunkSection section, PalettedContainerExtended<BlockState> container, BlockBox box, Iterator<?> var6, Map.Entry<BlockPos, BlockEntity> entry, BlockPos entityPos) {
+	@Inject(at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/shorts/Short2ObjectMap;put(SLjava/lang/Object;)Ljava/lang/Object;"), method = "init", locals = LocalCapture.CAPTURE_FAILHARD, remap = false)
+	private void indium_onBlockEntity(
+			ChunkSectionPos pos, CallbackInfo ci, WorldChunk chunk, ChunkSection section,
+			PalettedContainerExtended<BlockState> container, BlockBox box, Iterator<?> var6, Map.Entry<BlockPos, BlockEntity> entry, BlockPos entityPos) {
 		indium_populateDataObject(entityPos, entry.getValue());
 	}
 
