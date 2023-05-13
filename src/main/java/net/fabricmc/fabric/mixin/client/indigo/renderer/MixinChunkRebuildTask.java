@@ -19,6 +19,7 @@ package net.fabricmc.fabric.mixin.client.indigo.renderer;
 import java.util.Random;
 import java.util.Set;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -64,11 +65,13 @@ import net.fabricmc.fabric.impl.client.indigo.renderer.render.TerrainRenderConte
  * (Though they can use these as an example if they wish.)
  */
 @Mixin(targets = "net.minecraft.client.render.chunk.ChunkBuilder$BuiltChunk$RebuildTask")
-public class MixinChunkRebuildTask {
+public abstract class MixinChunkRebuildTask {
 	@Shadow
 	protected ChunkRendererRegion region;
-	@Shadow
-	protected BuiltChunk field_20839;
+
+	@Shadow(aliases = "this$0")
+	@Final
+	private BuiltChunk field_20839;
 
 	@Inject(at = @At("HEAD"), method = "Lnet/minecraft/client/render/chunk/ChunkBuilder$BuiltChunk$RebuildTask;render(FFFLnet/minecraft/client/render/chunk/ChunkBuilder$ChunkData;Lnet/minecraft/client/render/chunk/BlockBufferBuilderStorage;)Ljava/util/Set;")
 	private void hookChunkBuild(float float_1, float float_2, float float_3, ChunkBuilder.ChunkData renderData, BlockBufferBuilderStorage builder, CallbackInfoReturnable<Set<BlockEntity>> ci) {
@@ -76,7 +79,7 @@ public class MixinChunkRebuildTask {
 
 		if (region != null) {
 			TerrainRenderContext renderer = TerrainRenderContext.POOL.get();
-			renderer.prepare(region, field_20839, renderData, builder);
+			renderer.prepare(region, this.field_20839, renderData, builder);
 			((AccessChunkRendererRegion) region).fabric_setRenderer(renderer);
 		}
 	}
