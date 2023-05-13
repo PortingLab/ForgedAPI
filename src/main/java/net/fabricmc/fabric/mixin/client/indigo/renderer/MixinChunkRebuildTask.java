@@ -76,7 +76,7 @@ public class MixinChunkRebuildTask {
 
 		if (region != null) {
 			TerrainRenderContext renderer = TerrainRenderContext.POOL.get();
-			renderer.prepare(region, this.field_20839, renderData, builder);
+			renderer.prepare(region, field_20839, renderData, builder);
 			((AccessChunkRendererRegion) region).fabric_setRenderer(renderer);
 		}
 	}
