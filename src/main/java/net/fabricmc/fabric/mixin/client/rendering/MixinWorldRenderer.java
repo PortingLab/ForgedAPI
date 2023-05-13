@@ -130,6 +130,7 @@ public abstract class MixinWorldRenderer {
 		WorldRenderEvents.BEFORE_DEBUG_RENDER.invoker().beforeDebugRender(context);
 	}
 
+	/*
 	@Inject(
 			method = "render",
 			at = @At(
@@ -149,6 +150,7 @@ public abstract class MixinWorldRenderer {
 			WorldRenderEvents.AFTER_TRANSLUCENT.invoker().afterTranslucent(context);
 		}
 	}
+	 */
 
 	@Inject(
 			method = "render",

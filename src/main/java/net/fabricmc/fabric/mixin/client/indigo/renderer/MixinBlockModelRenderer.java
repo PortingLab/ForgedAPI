@@ -40,10 +40,16 @@ import net.fabricmc.fabric.impl.client.indigo.renderer.accessor.AccessBlockModel
 import net.fabricmc.fabric.impl.client.indigo.renderer.aocalc.VanillaAoHelper;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.BlockRenderContext;
 
+import javax.annotation.Nullable;
+
 @Mixin(BlockModelRenderer.class)
 public abstract class MixinBlockModelRenderer implements AccessBlockModelRenderer {
-	@Shadow
-	protected abstract void getQuadDimensions(BlockRenderView blockView, BlockState blockState, BlockPos blockPos, int[] vertexData, Direction face, float[] aoData, BitSet controlBits);
+
+	public static BlockModelRenderer blockModelRenderer;
+
+	public void getQuadDimensions(BlockRenderView world, BlockState state, BlockPos pos, int[] vertexData, Direction face, @Nullable float[] box, BitSet flags) {
+		blockModelRenderer.getQuadDimensions(world, state, pos, vertexData, face, box, flags);
+	};
 
 	private final ThreadLocal<BlockRenderContext> CONTEXTS = ThreadLocal.withInitial(BlockRenderContext::new);
 
@@ -63,6 +69,6 @@ public abstract class MixinBlockModelRenderer implements AccessBlockModelRendere
 
 	@Override
 	public void fabric_updateShape(BlockRenderView blockView, BlockState blockState, BlockPos pos, int[] vertexData, Direction face, float[] aoData, BitSet controlBits) {
-		getQuadDimensions(blockView, blockState, pos, vertexData, face, aoData, controlBits);
+		this.getQuadDimensions(blockView, blockState, pos, vertexData, face, aoData, controlBits);
 	}
 }

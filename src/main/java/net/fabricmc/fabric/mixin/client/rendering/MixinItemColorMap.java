@@ -34,9 +34,7 @@ import net.fabricmc.fabric.impl.client.rendering.ColorProviderRegistryImpl;
 
 @Mixin(ItemColors.class)
 public class MixinItemColorMap implements ColorProviderRegistryImpl.ColorMapperHolder<ItemConvertible, ItemColorProvider> {
-	@Shadow
-	@Final
-	private IdList<ItemColorProvider> providers;
+	private final IdList<ItemColorProvider> providers = new IdList<>();
 
 	@Inject(method = "create", at = @At("RETURN"))
 	private static void create(BlockColors blockMap, CallbackInfoReturnable<ItemColors> info) {
