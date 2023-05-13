@@ -20,7 +20,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.InvalidateRenderStateCallback
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class RenderingCallbackInvoker {
-
 	public static void onInitializeClient(FMLClientSetupEvent event) {
 		InvalidateRenderStateCallback.EVENT.register(() -> net.fabricmc.fabric.api.client.render.InvalidateRenderStateCallback.EVENT.invoker().onInvalidate());
 	}

@@ -16,10 +16,9 @@
 
 package net.fabricmc.fabric.api.event.lifecycle.v1;
 
-import net.minecraft.resource.LifecycledResourceManager;
+import net.minecraft.resource.ServerResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
-import net.minecraft.server.network.ServerPlayerEntity;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
@@ -68,22 +67,12 @@ public final class ServerLifecycleEvents {
 	 * Called when a Minecraft server has stopped.
 	 * All worlds have been closed and all (block)entities and players have been unloaded.
 	 *
-	 * <p>For example, an {@link net.minecraftforge.api.distmarker.Dist#CLIENT integrated server} will begin stopping, but it's client may continue to run.
-	 * Meanwhile for a {@link net.minecraftforge.api.distmarker.Dist#DEDICATED_SERVER dedicated server}, this will be the last event called.
+	 * <p>For example, an {@link net.fabricmc.api.EnvType#CLIENT integrated server} will begin stopping, but it's client may continue to run.
+	 * Meanwhile for a {@link net.fabricmc.api.EnvType#SERVER dedicated server}, this will be the last event called.
 	 */
 	public static final Event<ServerStopped> SERVER_STOPPED = EventFactory.createArrayBacked(ServerStopped.class, callbacks -> server -> {
 		for (ServerStopped callback : callbacks) {
 			callback.onServerStopped(server);
-		}
-	});
-
-	/**
-	 * Called when a Minecraft server is about to send tag and recipe data to a player.
-	 * @see SyncDataPackContents
-	 */
-	public static final Event<SyncDataPackContents> SYNC_DATA_PACK_CONTENTS = EventFactory.createArrayBacked(SyncDataPackContents.class, callbacks -> (player, joined) -> {
-		for (SyncDataPackContents callback : callbacks) {
-			callback.onSyncDataPackContents(player, joined);
 		}
 	});
 
@@ -128,23 +117,8 @@ public final class ServerLifecycleEvents {
 	}
 
 	@FunctionalInterface
-	public interface SyncDataPackContents {
-		/**
-		 * Called right before tags and recipes are sent to a player,
-		 * either because the player joined, or because the server reloaded resources.
-		 * The {@linkplain MinecraftServer#getResourceManager() server resource manager} is up-to-date when this is called.
-		 *
-		 * <p>For example, this event can be used to sync data loaded with custom resource reloaders.
-		 *
-		 * @param player Player to which the data is being sent.
-		 * @param joined True if the player is joining the server, false if the server finished a successful resource reload.
-		 */
-		void onSyncDataPackContents(ServerPlayerEntity player, boolean joined);
-	}
-
-	@FunctionalInterface
 	public interface StartDataPackReload {
-		void startDataPackReload(MinecraftServer server, LifecycledResourceManager resourceManager);
+		void startDataPackReload(MinecraftServer server, ServerResourceManager serverResourceManager);
 	}
 
 	@FunctionalInterface
@@ -155,9 +129,9 @@ public final class ServerLifecycleEvents {
 		 * <p>If the reload was not successful, the old data packs will be kept.
 		 *
 		 * @param server the server
-		 * @param resourceManager the resource manager
+		 * @param serverResourceManager the server resource manager
 		 * @param success if the reload was successful
 		 */
-		void endDataPackReload(MinecraftServer server, LifecycledResourceManager resourceManager, boolean success);
+		void endDataPackReload(MinecraftServer server, ServerResourceManager serverResourceManager, boolean success);
 	}
 }

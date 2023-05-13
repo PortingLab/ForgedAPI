@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.api.client.rendering.v1;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -26,8 +28,6 @@ import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 
 import net.fabricmc.fabric.impl.client.rendering.BuiltinItemRendererRegistryImpl;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * This registry holds {@linkplain DynamicItemRenderer builtin item renderers} for items.
@@ -38,7 +38,7 @@ public interface BuiltinItemRendererRegistry {
 	 * The singleton instance of the renderer registry.
 	 * Use this instance to call the methods in this interface.
 	 */
-	BuiltinItemRendererRegistry INSTANCE = new BuiltinItemRendererRegistryImpl();
+	BuiltinItemRendererRegistry INSTANCE = BuiltinItemRendererRegistryImpl.INSTANCE;
 
 	/**
 	 * Registers the renderer for the item.

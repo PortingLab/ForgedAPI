@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.mixin.event.lifecycle.client;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,37 +30,27 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.s2c.play.GameJoinS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerRespawnS2CPacket;
-import net.minecraft.network.packet.s2c.play.SynchronizeTagsS2CPacket;
-import net.minecraft.util.registry.DynamicRegistryManager;
-import net.minecraft.world.chunk.WorldChunk;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
-import net.fabricmc.fabric.impl.event.lifecycle.LoadedChunksCache;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 @Mixin(ClientPlayNetworkHandler.class)
-abstract class ClientPlayNetworkHandlerMixin {
+public abstract class ClientPlayNetworkHandlerMixin {
 	@Shadow
 	private ClientWorld world;
-	@Shadow
-	private DynamicRegistryManager.Immutable registryManager;
 
 	@Inject(method = "onPlayerRespawn", at = @At(value = "NEW", target = "net/minecraft/client/world/ClientWorld"))
 	private void onPlayerRespawn(PlayerRespawnS2CPacket packet, CallbackInfo ci) {
 		// If a world already exists, we need to unload all (block)entities in the world.
 		if (this.world != null) {
-			for (Entity entity : this.world.getEntities()) {
+			for (Entity entity : world.getEntities()) {
 				ClientEntityEvents.ENTITY_UNLOAD.invoker().onUnload(entity, this.world);
 			}
 
-			for (WorldChunk chunk : ((LoadedChunksCache) this.world).fabric_getLoadedChunks()) {
-				for (BlockEntity blockEntity : chunk.getBlockEntities().values()) {
-					ClientBlockEntityEvents.BLOCK_ENTITY_UNLOAD.invoker().onUnload(blockEntity, this.world);
-				}
+			for (BlockEntity blockEntity : world.blockEntities) {
+				ClientBlockEntityEvents.BLOCK_ENTITY_UNLOAD.invoker().onUnload(blockEntity, this.world);
+				// No need to clear the `tickingBlockEntities` list since it will be null in just an instant
 			}
 		}
 	}
@@ -77,10 +69,9 @@ abstract class ClientPlayNetworkHandlerMixin {
 				ClientEntityEvents.ENTITY_UNLOAD.invoker().onUnload(entity, this.world);
 			}
 
-			for (WorldChunk chunk : ((LoadedChunksCache) this.world).fabric_getLoadedChunks()) {
-				for (BlockEntity blockEntity : chunk.getBlockEntities().values()) {
-					ClientBlockEntityEvents.BLOCK_ENTITY_UNLOAD.invoker().onUnload(blockEntity, this.world);
-				}
+			for (BlockEntity blockEntity : world.blockEntities) {
+				ClientBlockEntityEvents.BLOCK_ENTITY_UNLOAD.invoker().onUnload(blockEntity, this.world);
+				// No need to clear the `tickingBlockEntities` list since it will be null in just an instant
 			}
 		}
 	}
@@ -90,27 +81,14 @@ abstract class ClientPlayNetworkHandlerMixin {
 	private void onClearWorld(CallbackInfo ci) {
 		// If a world already exists, we need to unload all (block)entities in the world.
 		if (this.world != null) {
-			for (Entity entity : this.world.getEntities()) {
+			for (Entity entity : world.getEntities()) {
 				ClientEntityEvents.ENTITY_UNLOAD.invoker().onUnload(entity, this.world);
 			}
 
-			for (WorldChunk chunk : ((LoadedChunksCache) this.world).fabric_getLoadedChunks()) {
-				for (BlockEntity blockEntity : chunk.getBlockEntities().values()) {
-					ClientBlockEntityEvents.BLOCK_ENTITY_UNLOAD.invoker().onUnload(blockEntity, this.world);
-				}
+			for (BlockEntity blockEntity : world.blockEntities) {
+				ClientBlockEntityEvents.BLOCK_ENTITY_UNLOAD.invoker().onUnload(blockEntity, this.world);
+				// No need to clear the `tickingBlockEntities` list since it will be null in just an instant
 			}
 		}
-	}
-
-	@Inject(
-			method = "onSynchronizeTags",
-			at = @At(
-					value = "INVOKE",
-					target = "java/util/Map.forEach(Ljava/util/function/BiConsumer;)V",
-					shift = At.Shift.AFTER, by = 1
-			)
-	)
-	private void hookOnSynchronizeTags(SynchronizeTagsS2CPacket packet, CallbackInfo ci) {
-		CommonLifecycleEvents.TAGS_LOADED.invoker().onTagsLoaded(registryManager, true);
 	}
 }

@@ -41,7 +41,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Matrix4f;
 
-import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.impl.client.rendering.WorldRenderContextImpl;
@@ -63,7 +62,7 @@ public abstract class MixinWorldRenderer {
 	}
 
 	@Inject(method = "setupTerrain", at = @At("RETURN"))
-	private void afterTerrainSetup(Camera camera, Frustum frustum, boolean hasForcedFrustum, boolean spectator, CallbackInfo ci) {
+	private void afterTerrainSetup(Camera camera, Frustum frustum, boolean hasForcedFrustum, int frame, boolean spectator, CallbackInfo ci) {
 		context.setFrustum(frustum);
 		WorldRenderEvents.AFTER_SETUP.invoker().afterSetup(context);
 	}
@@ -72,7 +71,7 @@ public abstract class MixinWorldRenderer {
 			method = "render",
 			at = @At(
 				value = "INVOKE",
-				target = "Lnet/minecraft/client/render/WorldRenderer;renderLayer(Lnet/minecraft/client/render/RenderLayer;Lnet/minecraft/client/util/math/MatrixStack;DDDLnet/minecraft/util/math/Matrix4f;)V",
+				target = "Lnet/minecraft/client/render/WorldRenderer;renderLayer(Lnet/minecraft/client/render/RenderLayer;Lnet/minecraft/client/util/math/MatrixStack;DDD)V",
 				ordinal = 2,
 				shift = Shift.AFTER
 			)
@@ -131,7 +130,6 @@ public abstract class MixinWorldRenderer {
 		WorldRenderEvents.BEFORE_DEBUG_RENDER.invoker().beforeDebugRender(context);
 	}
 
-	/*
 	@Inject(
 			method = "render",
 			at = @At(
@@ -143,9 +141,8 @@ public abstract class MixinWorldRenderer {
 		// set a flag so we know the next pushMatrix call is after particles
 		didRenderParticles = true;
 	}
-	 */
 
-	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;push()V"))
+	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;pushMatrix()V"))
 	private void beforeClouds(CallbackInfo ci) {
 		if (didRenderParticles) {
 			didRenderParticles = false;
@@ -169,44 +166,8 @@ public abstract class MixinWorldRenderer {
 		WorldRenderEvents.END.invoker().onEnd(context);
 	}
 
-	@Inject(method = "Lnet/minecraft/client/render/WorldRenderer;reload()V", at = @At("HEAD"))
+	@Inject(method = "reload", at = @At("HEAD"))
 	private void onReload(CallbackInfo ci) {
 		InvalidateRenderStateCallback.EVENT.invoker().onInvalidate();
-	}
-
-	@Inject(at = @At("HEAD"), method = "renderWeather", cancellable = true)
-	private void renderWeather(LightmapTextureManager manager, float tickDelta, double x, double y, double z, CallbackInfo info) {
-		if (this.client.world != null) {
-			DimensionRenderingRegistry.WeatherRenderer renderer = DimensionRenderingRegistry.getWeatherRenderer(world.getRegistryKey());
-
-			if (renderer != null) {
-				renderer.render(context);
-				info.cancel();
-			}
-		}
-	}
-
-	@Inject(at = @At("HEAD"), method = "renderClouds(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/math/Matrix4f;FDDD)V", cancellable = true)
-	private void renderCloud(MatrixStack matrices, Matrix4f matrix4f, float tickDelta, double cameraX, double cameraY, double cameraZ, CallbackInfo info) {
-		if (this.client.world != null) {
-			DimensionRenderingRegistry.CloudRenderer renderer = DimensionRenderingRegistry.getCloudRenderer(world.getRegistryKey());
-
-			if (renderer != null) {
-				renderer.render(context);
-				info.cancel();
-			}
-		}
-	}
-
-	@Inject(at = @At(value = "INVOKE", target = "Ljava/lang/Runnable;run()V", shift = At.Shift.AFTER, ordinal = 0), method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/math/Matrix4f;FLnet/minecraft/client/render/Camera;ZLjava/lang/Runnable;)V", cancellable = true)
-	private void renderSky(MatrixStack matrices, Matrix4f matrix4f, float tickDelta, Camera camera, boolean bl, Runnable runnable, CallbackInfo info) {
-		if (this.client.world != null) {
-			DimensionRenderingRegistry.SkyRenderer renderer = DimensionRenderingRegistry.getSkyRenderer(world.getRegistryKey());
-
-			if (renderer != null) {
-				renderer.render(context);
-				info.cancel();
-			}
-		}
 	}
 }

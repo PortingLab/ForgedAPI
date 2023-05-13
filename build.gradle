@@ -10,10 +10,15 @@ version = "${project.mod_version}+${project.minecraft_version}"
 group = project.maven_group
 
 loom {
-    accessWidenerPath = file("src/main/resources/fabric-lifecycle-events-v1.accesswidener")
     forge {
         mixinConfigs = [
-                "fabric-lifecycle-events-v1.mixins.json","fabric-rendering-v1.mixins.json"
+                "fabric-lifecycle-events-v1.mixins.json",
+                "fabric-renderer-api-v1.mixins.json",
+                "fabric-renderer-api-v1.debughud.mixins.json",
+                "fabric-renderer-indigo.mixins.json",
+                "fabric-rendering-v1.mixins.json",
+                "fabric-rendering-data-attachment-v1.mixins.json",
+                "indium.mixins.json"
         ]
     }
 }
@@ -27,7 +32,7 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     forge "net.minecraftforge:forge:${project.forge_version}"
 
-    modImplementation "maven.modrinth:reforgium:1.18.2-1.0.12a"
+    modImplementation "maven.modrinth:rubidium:0.2.11"
 }
 
 processResources {
