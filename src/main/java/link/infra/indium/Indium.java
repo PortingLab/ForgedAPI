@@ -126,10 +126,4 @@ public class Indium {
 			throw e;
 		}
 	}
-
-	public Indium() {
-		if (ModList.get().isLoaded("rubidium")) {
-			FMLJavaModLoadingContext.get().getModEventBus().register(this);
-		}
-	}
 }
