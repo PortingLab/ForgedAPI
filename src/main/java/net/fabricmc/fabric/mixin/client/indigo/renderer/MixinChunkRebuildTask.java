@@ -69,7 +69,7 @@ public abstract class MixinChunkRebuildTask {
 	@Shadow
 	protected ChunkRendererRegion region;
 
-	@Shadow(aliases = "this$0")
+	@Shadow(aliases = {"f_112859_", "this$1"})
 	@Final
 	private BuiltChunk field_20839;
 
