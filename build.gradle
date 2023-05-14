@@ -21,6 +21,9 @@ loom {
                 "fabric-rendering-data-attachment-v1.mixins.json",
                 "indium.mixins.json"
         ]
+        mixin {
+            add sourceSets.main, "fabric-renderer-indigo.mixins.refmap.json"
+        }
     }
 }
 
