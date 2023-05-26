@@ -3,7 +3,7 @@ plugins {
     id "maven-publish"
 }
 
-sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.archives_base_name
 version = "${project.mod_version}+${project.minecraft_version}"
@@ -21,9 +21,6 @@ loom {
                 "fabric-rendering-data-attachment-v1.mixins.json",
                 "indium.mixins.json"
         ]
-        mixin {
-            add sourceSets.main, "fabric-renderer-indigo.mixins.refmap.json"
-        }
     }
 }
 
@@ -49,7 +46,7 @@ processResources {
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
-    options.release = 17
+    options.release = 8
 }
 
 java {

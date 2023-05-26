@@ -1,7 +1,7 @@
 package org.portinglab.fabricapi;
 
 import link.infra.indium.Indium;
-import net.fabricmc.fabric.impl.client.indigo.Indigo;
+import me.jellysquid.mods.sodium.client.SodiumClientMod;
 import net.fabricmc.fabric.impl.client.rendering.RenderingCallbackInvoker;
 import net.fabricmc.fabric.impl.event.lifecycle.LegacyEventInvokers;
 import net.fabricmc.fabric.impl.event.lifecycle.client.LegacyClientEventInvokers;

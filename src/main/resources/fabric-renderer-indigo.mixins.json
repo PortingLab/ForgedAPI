@@ -4,7 +4,6 @@
   "compatibilityLevel": "JAVA_8",
   "minVersion": "0.8",
   "plugin": "net.fabricmc.fabric.impl.client.indigo.IndigoMixinConfigPlugin",
-  "refmap": "fabric-renderer-indigo.mixins.refmap.json",
   "mixins": [
   ],
   "client": [
