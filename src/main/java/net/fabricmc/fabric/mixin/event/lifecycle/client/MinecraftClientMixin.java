@@ -16,6 +16,9 @@
 
 package net.fabricmc.fabric.mixin.event.lifecycle.client;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.minecraft.client.MinecraftClient;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,20 +26,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.MinecraftClient;
-
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
-
 @OnlyIn(Dist.CLIENT)
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
-	@Inject(at = @At("HEAD"), method = "tick")
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/hooks/BasicEventHooks;onPreClientTick()V", remap = false, shift = At.Shift.BEFORE), method = "tick")
 	private void onStartTick(CallbackInfo info) {
 		ClientTickEvents.START_CLIENT_TICK.invoker().onStartTick((MinecraftClient) (Object) this);
 	}
 
-	@Inject(at = @At("RETURN"), method = "tick")
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/hooks/BasicEventHooks;onPostClientTick()V", remap = false, shift = At.Shift.BEFORE), method = "tick")
 	private void onEndTick(CallbackInfo info) {
 		ClientTickEvents.END_CLIENT_TICK.invoker().onEndTick((MinecraftClient) (Object) this);
 	}

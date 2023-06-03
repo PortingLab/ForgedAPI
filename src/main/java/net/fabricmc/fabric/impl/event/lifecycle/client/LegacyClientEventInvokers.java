@@ -18,7 +18,6 @@ package net.fabricmc.fabric.impl.event.lifecycle.client;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.event.client.ClientTickCallback;
-//import net.fabricmc.fabric.api.event.client.ItemTooltipCallback;
 import net.fabricmc.fabric.api.event.world.WorldTickCallback;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 

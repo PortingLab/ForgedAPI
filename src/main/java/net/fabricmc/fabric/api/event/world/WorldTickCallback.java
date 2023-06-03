@@ -16,12 +16,11 @@
 
 package net.fabricmc.fabric.api.event.world;
 
-import net.minecraft.world.World;
-
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.world.World;
 
 @Deprecated
 public interface WorldTickCallback {

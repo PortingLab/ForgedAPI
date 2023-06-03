@@ -1,0 +1,18 @@
+package org.portinglab.fabricapi.mixin;
+
+import net.minecraft.server.world.ChunkHolder;
+import net.minecraft.world.chunk.WorldChunk;
+import org.jetbrains.annotations.Nullable;
+import org.portinglab.fabricapi.api.ExtendedChunkHolder;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+
+@Mixin(ChunkHolder.class)
+public class ChunkHolderImpl implements ExtendedChunkHolder {
+    @Shadow private WorldChunk currentlyLoading;
+
+    @Override
+    public void setCurrentlyLoadingWorldChunk(@Nullable WorldChunk worldChunk) {
+        this.currentlyLoading = worldChunk;
+    }
+}

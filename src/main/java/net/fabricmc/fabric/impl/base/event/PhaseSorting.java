@@ -16,16 +16,11 @@
 
 package net.fabricmc.fabric.impl.base.event;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
-
 import com.google.common.annotations.VisibleForTesting;
 import org.jetbrains.annotations.ApiStatus;
+import org.portinglab.fabricapi.ForgedAPI;
+
+import java.util.*;
 
 /**
  * Contains phase-sorting logic for {@link ArrayBackedEvent}.
@@ -127,7 +122,7 @@ public class PhaseSorting {
 			phase.visitStatus = 2;
 		} else if (phase.visitStatus == 1 && ENABLE_CYCLE_WARNING) {
 			// Already visiting, so we have found a cycle.
-			ArrayBackedEvent.LOGGER.warn(String.format(
+			ForgedAPI.LOGGER.warn(String.format(
 					"Event phase ordering conflict detected.%nEvent phase %s is ordered both before and after event phase %s.",
 					phase.id,
 					parent.id
