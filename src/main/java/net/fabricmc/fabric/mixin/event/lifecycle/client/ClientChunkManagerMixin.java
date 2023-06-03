@@ -61,7 +61,7 @@ public abstract class ClientChunkManagerMixin {
 					remap = false
 			)
 	)
-	private void onChunkUnload(int chunkX, int chunkZ, CallbackInfo ci, WorldChunk chunk) {
-		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload(this.world, chunk);
+	private void onChunkUnload(int chunkX, int chunkZ, CallbackInfo ci) {
+		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload(this.world, this.world.getChunk(chunkX, chunkZ));
 	}
 }
