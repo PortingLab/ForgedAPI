@@ -16,6 +16,9 @@
 
 package net.fabricmc.fabric.impl.base.event;
 
+import net.fabricmc.fabric.api.event.Event;
+import net.minecraft.util.Identifier;
+
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -27,10 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import net.minecraft.util.Identifier;
-
-import net.fabricmc.fabric.api.event.Event;
-
+@SuppressWarnings("unused")
 public final class EventFactoryImpl {
 	private static final List<ArrayBackedEvent<?>> ARRAY_BACKED_EVENTS = new ArrayList<>();
 

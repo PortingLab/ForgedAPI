@@ -6,20 +6,14 @@ plugins {
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.archives_base_name
-version = "${project.mod_version}+${project.minecraft_version}"
+version = "${project.minecraft_version}+${project.mod_version}"
 group = project.maven_group
 
 loom {
-    accessWidenerPath = file("src/main/resources/forgedapi.accesswidener")
     forge {
         mixinConfigs = [
                 "fabric-lifecycle-events-v1.mixins.json",
-                "fabric-renderer-api-v1.mixins.json",
-                "fabric-renderer-api-v1.debughud.mixins.json",
-                "fabric-renderer-indigo.mixins.json",
-                "fabric-rendering-v1.mixins.json",
-                "fabric-rendering-data-attachment-v1.mixins.json",
-                "indium.mixins.json"
+                "forgedapi.mixins.json"
         ]
     }
 }
@@ -32,8 +26,6 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     forge "net.minecraftforge:forge:${project.forge_version}"
-
-    modImplementation "maven.modrinth:rubidium:0.2.11"
 }
 
 processResources {
@@ -56,9 +48,6 @@ java {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : project.mod_id,
-                "Specification-Vendor"    : project.mod_author,
-                "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : version,
                 "Implementation-Vendor"   : project.mod_author,
@@ -67,7 +56,6 @@ jar {
     }
 }
 
-// configure the maven publication
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -75,11 +63,5 @@ publishing {
 		}
     }
 
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
-    }
+    repositories {}
 }

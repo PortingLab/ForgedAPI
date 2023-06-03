@@ -16,11 +16,10 @@
 
 package net.fabricmc.fabric.api.event.client;
 
-import net.minecraft.client.MinecraftClient;
-
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.client.MinecraftClient;
 
 @Deprecated
 public interface ClientTickCallback {

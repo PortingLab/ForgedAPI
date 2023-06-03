@@ -16,6 +16,14 @@
 
 package net.fabricmc.fabric.mixin.event.lifecycle.client;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
+import net.minecraft.network.packet.s2c.play.GameJoinS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlayerRespawnS2CPacket;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,26 +31,22 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.network.packet.s2c.play.GameJoinS2CPacket;
-import net.minecraft.network.packet.s2c.play.PlayerRespawnS2CPacket;
-
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
-
 @OnlyIn(Dist.CLIENT)
 @Mixin(ClientPlayNetworkHandler.class)
 public abstract class ClientPlayNetworkHandlerMixin {
 	@Shadow
 	private ClientWorld world;
 
-	@Inject(method = "onPlayerRespawn", at = @At(value = "NEW", target = "net/minecraft/client/world/ClientWorld"))
+	@Inject(
+			method = "onPlayerRespawn",
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraftforge/fml/client/ClientHooks;firePlayerRespawn(Lnet/minecraft/client/network/ClientPlayerInteractionManager;Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/network/ClientConnection;)V",
+					shift = At.Shift.BEFORE,
+					remap = false
+			)
+	)
 	private void onPlayerRespawn(PlayerRespawnS2CPacket packet, CallbackInfo ci) {
-		// If a world already exists, we need to unload all (block)entities in the world.
 		if (this.world != null) {
 			for (Entity entity : world.getEntities()) {
 				ClientEntityEvents.ENTITY_UNLOAD.invoker().onUnload(entity, this.world);
@@ -50,7 +54,6 @@ public abstract class ClientPlayNetworkHandlerMixin {
 
 			for (BlockEntity blockEntity : world.blockEntities) {
 				ClientBlockEntityEvents.BLOCK_ENTITY_UNLOAD.invoker().onUnload(blockEntity, this.world);
-				// No need to clear the `tickingBlockEntities` list since it will be null in just an instant
 			}
 		}
 	}
@@ -61,7 +64,7 @@ public abstract class ClientPlayNetworkHandlerMixin {
 	 * Velocity by default will send a Game Join packet when the player changes servers, which will create a new client world.
 	 * Also anyone can send another GameJoinPacket at any time, so we need to watch out.
 	 */
-	@Inject(method = "onGameJoin", at = @At(value = "NEW", target = "net/minecraft/client/world/ClientWorld"))
+	@Inject(method = "onGameJoin", at = @At(value = "NEW", target = "(Lnet/minecraft/client/network/ClientPlayNetworkHandler;Lnet/minecraft/client/world/ClientWorld$Properties;Lnet/minecraft/util/registry/RegistryKey;Lnet/minecraft/world/dimension/DimensionType;ILjava/util/function/Supplier;Lnet/minecraft/client/render/WorldRenderer;ZJ)Lnet/minecraft/client/world/ClientWorld;", shift = At.Shift.AFTER))
 	private void onGameJoin(GameJoinS2CPacket packet, CallbackInfo ci) {
 		// If a world already exists, we need to unload all (block)entities in the world.
 		if (this.world != null) {

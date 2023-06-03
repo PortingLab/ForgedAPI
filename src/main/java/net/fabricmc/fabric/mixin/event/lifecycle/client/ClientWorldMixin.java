@@ -16,10 +16,15 @@
 
 package net.fabricmc.fabric.mixin.event.lifecycle.client;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.mixin.event.lifecycle.WorldMixin;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.profiler.Profiler;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,22 +33,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.profiler.Profiler;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.mixin.event.lifecycle.WorldMixin;
-
+@SuppressWarnings("rawtypes")
 @OnlyIn(Dist.CLIENT)
 @Mixin(ClientWorld.class)
 public abstract class ClientWorldMixin extends WorldMixin {
 	// Call our load event after vanilla has loaded the entity
-	@Inject(method = "addEntityPrivate", at = @At("TAIL"))
+	@Inject(method = "addEntityPrivate", at = @At("HEAD"))
 	private void onEntityLoad(int id, Entity entity, CallbackInfo ci) {
 		ClientEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ClientWorld) (Object) this);
 	}

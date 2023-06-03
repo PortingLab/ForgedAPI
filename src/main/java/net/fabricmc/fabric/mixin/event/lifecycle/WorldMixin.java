@@ -16,10 +16,14 @@
 
 package net.fabricmc.fabric.mixin.event.lifecycle;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerBlockEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.profiler.Profiler;
+import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,26 +34,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.profiler.Profiler;
-import net.minecraft.world.World;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerBlockEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-
+@SuppressWarnings({"rawtypes", "DataFlowIssue", "BooleanMethodIsAlwaysInverted"})
 @Mixin(World.class)
 public abstract class WorldMixin {
-	@Shadow
-	public abstract boolean isClient();
-
-	@Shadow
-	public abstract Profiler getProfiler();
+	@Shadow public abstract boolean isClient();
+	@Shadow @Final public boolean isClient;
 
 	@Inject(method = "addBlockEntity", at = @At("TAIL"))
 	protected void onLoadBlockEntity(BlockEntity blockEntity, CallbackInfoReturnable<Boolean> cir) {
-		if (!this.isClient()) { // Only fire this event if we are a server world
+		if (!this.isClient()) {
 			ServerBlockEntityEvents.BLOCK_ENTITY_LOAD.invoker().onLoad(blockEntity, (ServerWorld) (Object) this);
 		}
 	}
@@ -57,7 +54,7 @@ public abstract class WorldMixin {
 	// Mojang what hell, why do you need three ways to unload block entities
 	@Inject(method = "removeBlockEntity", at = @At(value = "INVOKE", target = "Ljava/util/List;remove(Ljava/lang/Object;)Z", ordinal = 1), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
 	protected void onUnloadBlockEntity(BlockPos pos, CallbackInfo ci, BlockEntity blockEntity) {
-		if (!this.isClient()) { // Only fire this event if we are a server world
+		if (!this.isClient()) {
 			ServerBlockEntityEvents.BLOCK_ENTITY_UNLOAD.invoker().onUnload(blockEntity, (ServerWorld) (Object) this);
 		}
 	}
@@ -83,7 +80,7 @@ public abstract class WorldMixin {
 
 	@Inject(at = @At("RETURN"), method = "tickBlockEntities")
 	protected void tickWorldAfterBlockEntities(CallbackInfo ci) {
-		if (!this.isClient()) {
+		if (!this.isClient) {
 			ServerTickEvents.END_WORLD_TICK.invoker().onEndTick((ServerWorld) (Object) this);
 		}
 	}

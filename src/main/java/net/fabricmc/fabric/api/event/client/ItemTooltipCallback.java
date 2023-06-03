@@ -16,14 +16,13 @@
 
 package net.fabricmc.fabric.api.event.client;
 
-import java.util.List;
-
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
+import java.util.List;
 
 /**
  * @deprecated Please use {@link net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback}
