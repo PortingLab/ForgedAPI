@@ -12,12 +12,13 @@ import org.apache.logging.log4j.Logger;
 @Mod(ForgedAPI.MODID)
 public class ForgedAPI {
     public static final String MODID = "forgedapi";
-    private static final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     public static final Logger LOGGER = LogManager.getLogger("FrogeAPI");
 
     public ForgedAPI() {
+        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(LegacyEventInvokers::onInitialize);
         bus.addListener(LegacyClientEventInvokers::onInitializeClient);
         MinecraftForge.EVENT_BUS.register(this);
     }
 }
+
