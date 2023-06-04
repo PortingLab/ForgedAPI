@@ -49,7 +49,7 @@ public abstract class ClientChunkManagerMixin {
 	}
 
 	@Inject(method = "unload" , at = @At(value = "INVOKE", target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z", shift = At.Shift.BEFORE, remap = false))
-	private void onChunkUnload(int chunkX, int chunkZ, CallbackInfo ci, WorldChunk chunk) {
-		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload(this.world, chunk);
+	private void onChunkUnload(int chunkX, int chunkZ, CallbackInfo ci) {
+		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload(this.world, this.world.getChunk(chunkX, chunkZ));
 	}
 }
