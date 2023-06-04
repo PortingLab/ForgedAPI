@@ -19,7 +19,8 @@ loom {
                 "fabric-renderer-indigo.mixins.json",
                 "fabric-rendering-v1.mixins.json",
                 "fabric-rendering-data-attachment-v1.mixins.json",
-                "indium.mixins.json"
+                "indium.mixins.json",
+                "forgedapi.mixins.json"
         ]
     }
 }

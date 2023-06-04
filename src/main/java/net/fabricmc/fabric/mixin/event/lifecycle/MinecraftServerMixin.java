@@ -71,7 +71,7 @@ public abstract class MinecraftServerMixin {
 		ServerTickEvents.START_SERVER_TICK.invoker().onStartTick((MinecraftServer) (Object) this);
 	}
 
-	@Inject(at = @At("TAIL"), method = "tick")
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/hooks/BasicEventHooks;onPostServerTick()V", remap = false, shift = At.Shift.BEFORE), method = "tick")
 	private void onEndTick(BooleanSupplier shouldKeepTicking, CallbackInfo info) {
 		ServerTickEvents.END_SERVER_TICK.invoker().onEndTick((MinecraftServer) (Object) this);
 	}
@@ -79,7 +79,7 @@ public abstract class MinecraftServerMixin {
 	/**
 	 * When a world is closed, it means the world will be unloaded.
 	 */
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;close()V"), method = "shutdown", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z", remap = false, shift = At.Shift.BEFORE), method = "shutdown", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
 	private void closeWorld(CallbackInfo ci, Iterator<ServerWorld> worlds, ServerWorld serverWorld) {
 		for (BlockEntity blockEntity : serverWorld.blockEntities) {
 			ServerBlockEntityEvents.BLOCK_ENTITY_UNLOAD.invoker().onUnload(blockEntity, serverWorld);
@@ -96,7 +96,7 @@ public abstract class MinecraftServerMixin {
 		return result;
 	}
 
-	@Inject(method = "shutdown", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;close()V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
+	@Inject(method = "shutdown", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z", shift = At.Shift.BEFORE, remap = false), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
 	private void onUnloadWorldAtShutdown(CallbackInfo ci, Iterator<ServerWorld> worlds, ServerWorld world) {
 		ServerWorldEvents.UNLOAD.invoker().onWorldUnload((MinecraftServer) (Object) this, world);
 	}

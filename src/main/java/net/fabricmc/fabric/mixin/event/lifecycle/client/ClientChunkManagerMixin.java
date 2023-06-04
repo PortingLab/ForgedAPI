@@ -43,13 +43,13 @@ public abstract class ClientChunkManagerMixin {
 	@Shadow
 	private ClientWorld world;
 
-	@Inject(method = "loadChunkFromPacket", at = @At("TAIL")) // 1.16 has a boolean param here. I think it means whether the packet is complete.
+	@Inject(method = "loadChunkFromPacket", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z", shift = At.Shift.BEFORE, remap = false)) // 1.16 has a boolean param here. I think it means whether the packet is complete.
 	private void onChunkLoad(int chunkX, int chunkZ, BiomeArray biomes, PacketByteBuf buf, CompoundTag tag, int k, boolean complete, CallbackInfoReturnable<WorldChunk> cir) {
 		ClientChunkEvents.CHUNK_LOAD.invoker().onChunkLoad(this.world, cir.getReturnValue());
 	}
 
-	@Inject(method = "unload", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/world/ClientChunkManager$ClientChunkMap;compareAndSet(ILnet/minecraft/world/chunk/WorldChunk;Lnet/minecraft/world/chunk/WorldChunk;)Lnet/minecraft/world/chunk/WorldChunk;", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-	private void onChunkUnload(int chunkX, int chunkZ, CallbackInfo ci, int i, WorldChunk chunk) {
+	@Inject(method = "unload" , at = @At(value = "INVOKE", target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z", shift = At.Shift.BEFORE, remap = false))
+	private void onChunkUnload(int chunkX, int chunkZ, CallbackInfo ci, WorldChunk chunk) {
 		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload(this.world, chunk);
 	}
 }

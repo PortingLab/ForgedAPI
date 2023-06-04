@@ -43,7 +43,7 @@ import net.fabricmc.fabric.mixin.event.lifecycle.WorldMixin;
 @Mixin(ClientWorld.class)
 public abstract class ClientWorldMixin extends WorldMixin {
 	// Call our load event after vanilla has loaded the entity
-	@Inject(method = "addEntityPrivate", at = @At("TAIL"))
+	@Inject(method = "addEntityPrivate", at = @At("HEAD"))
 	private void onEntityLoad(int id, Entity entity, CallbackInfo ci) {
 		ClientEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ClientWorld) (Object) this);
 	}

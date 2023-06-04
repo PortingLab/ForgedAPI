@@ -33,8 +33,6 @@ import net.fabricmc.fabric.api.event.Event;
 import org.portinglab.fabricapi.ForgedAPI;
 
 class ArrayBackedEvent<T> extends Event<T> {
-	static final Logger LOGGER = ForgedAPI.LOGGER;
-
 	private final Function<T[], T> invokerFactory;
 	private final Object lock = new Object();
 	private T[] handlers;

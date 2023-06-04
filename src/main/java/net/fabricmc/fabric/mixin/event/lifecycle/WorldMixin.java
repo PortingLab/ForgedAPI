@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,13 +40,11 @@ import net.minecraft.world.World;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerBlockEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
+@SuppressWarnings({"rawtypes", "DataFlowIssue", "BooleanMethodIsAlwaysInverted"})
 @Mixin(World.class)
 public abstract class WorldMixin {
-	@Shadow
-	public abstract boolean isClient();
-
-	@Shadow
-	public abstract Profiler getProfiler();
+	@Shadow public abstract boolean isClient();
+	@Shadow @Final public boolean isClient;
 
 	@Inject(method = "addBlockEntity", at = @At("TAIL"))
 	protected void onLoadBlockEntity(BlockEntity blockEntity, CallbackInfoReturnable<Boolean> cir) {
@@ -83,7 +82,7 @@ public abstract class WorldMixin {
 
 	@Inject(at = @At("RETURN"), method = "tickBlockEntities")
 	protected void tickWorldAfterBlockEntities(CallbackInfo ci) {
-		if (!this.isClient()) {
+		if (!this.isClient) {
 			ServerTickEvents.END_WORLD_TICK.invoker().onEndTick((ServerWorld) (Object) this);
 		}
 	}

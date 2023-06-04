@@ -22,17 +22,20 @@ import java.nio.file.Path;
 public class ForgedAPI {
     public static final String MODID = "forgedapi";
 
-    public static final Logger LOGGER = LogManager.getLogger("ForgedFabricAPI");
+    public static final Logger LOGGER = LogManager.getLogger("ForgedAPI");
 
     public ForgedAPI() {
-        getModBus().addListener(RenderingCallbackInvoker::onInitializeClient);
-        //getModBus().addListener(Indigo::onInitializeClient);
-        getModBus().addListener(LegacyEventInvokers::onInitialize);
-        getModBus().addListener(LegacyClientEventInvokers::onInitializeClient);
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        getModBus().addListener(Indium::onInitializeClient);
+        modEventBus.addListener(RenderingCallbackInvoker::onInitializeClient);
+        //modEventBus.addListener(Indigo::onInitializeClient);
+
+        modEventBus.addListener(LegacyEventInvokers::onInitialize);
+        modEventBus.addListener(LegacyClientEventInvokers::onInitializeClient);
+
+        modEventBus.addListener(Indium::onInitializeClient);
         if (ModList.get().isLoaded("rubidium")) {
-            getModBus().register(Indium.class);
+            modEventBus.register(Indium.class);
         }
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -40,9 +43,5 @@ public class ForgedAPI {
 
     public static Path getConfigDir() {
         return FMLPaths.CONFIGDIR.get();
-    }
-
-    public static IEventBus getModBus() {
-        return FMLJavaModLoadingContext.get().getModEventBus();
     }
 }

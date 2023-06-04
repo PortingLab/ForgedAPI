@@ -40,7 +40,7 @@ public abstract class ClientPlayNetworkHandlerMixin {
 	@Shadow
 	private ClientWorld world;
 
-	@Inject(method = "onPlayerRespawn", at = @At(value = "NEW", target = "net/minecraft/client/world/ClientWorld"))
+	@Inject(method = "onPlayerRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/client/ClientHooks;firePlayerRespawn(Lnet/minecraft/client/network/ClientPlayerInteractionManager;Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/network/ClientConnection;)V", shift = At.Shift.BEFORE, remap = false))
 	private void onPlayerRespawn(PlayerRespawnS2CPacket packet, CallbackInfo ci) {
 		// If a world already exists, we need to unload all (block)entities in the world.
 		if (this.world != null) {
@@ -61,7 +61,7 @@ public abstract class ClientPlayNetworkHandlerMixin {
 	 * Velocity by default will send a Game Join packet when the player changes servers, which will create a new client world.
 	 * Also anyone can send another GameJoinPacket at any time, so we need to watch out.
 	 */
-	@Inject(method = "onGameJoin", at = @At(value = "NEW", target = "net/minecraft/client/world/ClientWorld"))
+	@Inject(method = "onGameJoin", at = @At(value = "NEW", target = "(Lnet/minecraft/client/network/ClientPlayNetworkHandler;Lnet/minecraft/client/world/ClientWorld$Properties;Lnet/minecraft/util/registry/RegistryKey;Lnet/minecraft/world/dimension/DimensionType;ILjava/util/function/Supplier;Lnet/minecraft/client/render/WorldRenderer;ZJ)Lnet/minecraft/client/world/ClientWorld;", shift = At.Shift.AFTER))
 	private void onGameJoin(GameJoinS2CPacket packet, CallbackInfo ci) {
 		// If a world already exists, we need to unload all (block)entities in the world.
 		if (this.world != null) {
