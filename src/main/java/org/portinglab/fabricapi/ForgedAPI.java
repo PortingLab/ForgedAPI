@@ -15,15 +15,18 @@ import org.slf4j.LoggerFactory;
 @Mod(ForgedAPI.MODID)
 public class ForgedAPI {
     public static final String MODID = "forgedapi";
-    public static final Logger LOGGER = LoggerFactory.getLogger("ForgedFabricAPI");
+    public static final Logger LOGGER = LoggerFactory.getLogger("ForgedAPI");
 
     public ForgedAPI() {
-        IEventBus MOD_BUS = FMLJavaModLoadingContext.get().getModEventBus();
-        MOD_BUS.addListener(RenderingCallbackInvoker::onInitializeClient);
-        MOD_BUS.addListener(ClientLifecycleEventsImpl::onInitializeClient);
-        MOD_BUS.addListener(LifecycleEventsImpl::onInitialize);
-        MOD_BUS.addListener(LegacyEventInvokers::onInitialize);
-        MOD_BUS.addListener(LegacyClientEventInvokers::onInitializeClient);
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        modEventBus.addListener(RenderingCallbackInvoker::onInitializeClient);
+
+        modEventBus.addListener(ClientLifecycleEventsImpl::onInitializeClient);
+        modEventBus.addListener(LifecycleEventsImpl::onInitialize);
+
+        modEventBus.addListener(LegacyEventInvokers::onInitialize);
+        modEventBus.addListener(LegacyClientEventInvokers::onInitializeClient);
         MinecraftForge.EVENT_BUS.register(this);
     }
 }

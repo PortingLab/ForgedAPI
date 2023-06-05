@@ -31,12 +31,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
-	@Inject(at = @At("HEAD"), method = "tick")
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraftforge/event/ForgeEventFactory;onPreClientTick()V", remap = false, shift = At.Shift.BEFORE), method = "tick")
 	private void onStartTick(CallbackInfo info) {
 		ClientTickEvents.START_CLIENT_TICK.invoker().onStartTick((MinecraftClient) (Object) this);
 	}
 
-	@Inject(at = @At("RETURN"), method = "tick")
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraftforge/event/ForgeEventFactory;onPostClientTick()V", remap = false, shift = At.Shift.BEFORE), method = "tick")
 	private void onEndTick(CallbackInfo info) {
 		ClientTickEvents.END_CLIENT_TICK.invoker().onEndTick((MinecraftClient) (Object) this);
 	}
