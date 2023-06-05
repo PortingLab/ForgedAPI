@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 import com.google.common.annotations.VisibleForTesting;
+import org.portinglab.fabricapi.ForgedAPI;
 
 /**
  * Contains phase-sorting logic for {@link ArrayBackedEvent}.
@@ -125,7 +126,7 @@ public class PhaseSorting {
 			phase.visitStatus = 2;
 		} else if (phase.visitStatus == 1 && ENABLE_CYCLE_WARNING) {
 			// Already visiting, so we have found a cycle.
-			ArrayBackedEvent.LOGGER.warn(String.format(
+			ForgedAPI.LOGGER.warn(String.format(
 					"Event phase ordering conflict detected.%nEvent phase %s is ordered both before and after event phase %s.",
 					phase.id,
 					parent.id

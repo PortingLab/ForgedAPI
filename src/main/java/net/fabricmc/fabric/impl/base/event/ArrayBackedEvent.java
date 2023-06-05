@@ -24,16 +24,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.portinglab.fabricapi.ForgedAPI;
-import org.slf4j.Logger;
-
 import net.minecraft.util.Identifier;
 
 import net.fabricmc.fabric.api.event.Event;
 
 class ArrayBackedEvent<T> extends Event<T> {
-	static final Logger LOGGER = ForgedAPI.LOGGER;
-
 	private final Function<T[], T> invokerFactory;
 	private final Object lock = new Object();
 	private T[] handlers;
