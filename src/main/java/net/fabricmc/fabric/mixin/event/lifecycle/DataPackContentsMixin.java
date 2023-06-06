@@ -28,7 +28,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 
 @Mixin(DataPackContents.class)
 public class DataPackContentsMixin {
-	@Inject(method = "refresh", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z"))
+	@Inject(method = "refresh", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z", remap = false, shift = At.Shift.BEFORE))
 	private void hookRefresh(DynamicRegistryManager registries, CallbackInfo ci) {
 		CommonLifecycleEvents.TAGS_LOADED.invoker().onTagsLoaded(registries, false);
 	}

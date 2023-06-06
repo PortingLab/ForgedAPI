@@ -68,7 +68,7 @@ public abstract class MinecraftServerMixin {
 		ServerTickEvents.START_SERVER_TICK.invoker().onStartTick((MinecraftServer) (Object) this);
 	}
 
-	@Inject(at = @At(value = "TAIL", target = "Lnet/minecraftforge/event/ForgeEventFactory;onPostServerTick(Ljava/util/function/BooleanSupplier)V", remap = false, shift = At.Shift.BEFORE), method = "tick")
+	@Inject(at = @At(value = "TAIL", target = "Lnet/minecraftforge/event/ForgeEventFactory;onPostServerTick()V", remap = false, shift = At.Shift.BEFORE), method = "tick")
 	private void onEndTick(BooleanSupplier shouldKeepTicking, CallbackInfo info) {
 		ServerTickEvents.END_SERVER_TICK.invoker().onEndTick((MinecraftServer) (Object) this);
 	}
