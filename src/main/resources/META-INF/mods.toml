@@ -13,7 +13,7 @@ authors="PortingLab" #optional
 description = '''
 Fabric API unofficial Forge port.
 
-Contains the essentials for Fabric API modules.
+Re-implement part of the Fabric API on Forge.
 '''
 
 [[dependencies.forgedapi]]

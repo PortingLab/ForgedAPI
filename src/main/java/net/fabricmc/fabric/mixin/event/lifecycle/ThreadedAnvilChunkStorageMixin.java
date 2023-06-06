@@ -67,6 +67,9 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 	/**
 	 * Injection is inside of tryUnloadChunk.
 	 * We inject just after "setLoadedToWorld" is made false, since here the WorldChunk is guaranteed to be unloaded.
+	 *
+	 * @author Kasualix, TexTrue
+	 * @reason insert event invoker
 	 */
 	@Overwrite
 	private void tryUnloadChunk(long pos, ChunkHolder holder) {
@@ -118,6 +121,9 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 	 *
 	 * <ul><li>the chunk being loaded MUST be a WorldChunk.
 	 * <li>everything within the chunk has been loaded into the world. Entities, BlockEntities, etc.</ul>
+	 *
+	 * @author Kasualix, TexTrue
+	 * @reason insert event invoker
 	 */
 	@Overwrite
 	private CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>> convertToFullChunk(ChunkHolder chunkHolder) {
