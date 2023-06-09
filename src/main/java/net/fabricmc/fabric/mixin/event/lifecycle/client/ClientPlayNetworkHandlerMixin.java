@@ -47,7 +47,7 @@ abstract class ClientPlayNetworkHandlerMixin {
 	@Shadow
 	private DynamicRegistryManager.Immutable registryManager;
 
-	@Inject(method = "onPlayerRespawn", at = @At(value = "NEW", target = "net/minecraft/client/world/ClientWorld"))
+	@Inject(method = "onPlayerRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/client/ForgeHooksClient;firePlayerRespawn(Lnet/minecraft/client/network/ClientPlayerInteractionManager;Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/network/ClientConnection;)V", remap = false, shift = At.Shift.BEFORE))
 	private void onPlayerRespawn(PlayerRespawnS2CPacket packet, CallbackInfo ci) {
 		// If a world already exists, we need to unload all (block)entities in the world.
 		if (this.world != null) {

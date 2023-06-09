@@ -15,9 +15,9 @@ public class ForgedAPI {
     public static final Logger LOGGER = LoggerFactory.getLogger("ForgedFabricAPI");
 
     public ForgedAPI() {
-        IEventBus MOD_BUS = FMLJavaModLoadingContext.get().getModEventBus();
-        MOD_BUS.addListener(ClientLifecycleEventsImpl::onInitializeClient);
-        MOD_BUS.addListener(LifecycleEventsImpl::onInitialize);
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.addListener(ClientLifecycleEventsImpl::onInitializeClient);
+        modEventBus.addListener(LifecycleEventsImpl::onInitialize);
         MinecraftForge.EVENT_BUS.register(this);
     }
 }
