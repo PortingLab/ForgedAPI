@@ -41,10 +41,6 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 
@@ -85,8 +81,8 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 			} else if (this.chunksToUnload.remove(pos, holder) && chunk != null) {
 				if (chunk instanceof WorldChunk) {
 					((WorldChunk)chunk).setLoadedToWorld(false);
-					MinecraftForge.EVENT_BUS.post(new ChunkEvent.Unload((Chunk) chunk));
 					ServerChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload(this.world, (WorldChunk) chunk);
+					MinecraftForge.EVENT_BUS.post(new ChunkEvent.Unload((Chunk) chunk));
 				}
 
 				this.save((Chunk) chunk);
@@ -111,6 +107,7 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 
 		});
 	}
+
 	/*
 	@Inject(method = "method_18843", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/WorldChunk;setLoadedToWorld(Z)V", shift = At.Shift.AFTER))
 	private void onChunkUnload(ChunkHolder chunkHolder, CompletableFuture<Chunk> chunkFuture, long pos, Chunk chunk, CallbackInfo ci) {
@@ -158,6 +155,7 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 						((ExtendedChunkHolder) chunkHolder).setCurrentlyLoadingWorldChunk(levelchunk);
 						levelchunk.updateAllBlockEntities();
 						levelchunk.addChunkTickSchedulers(this.world);
+						ServerChunkEvents.CHUNK_LOAD.invoker().onChunkLoad(this.world, levelchunk);
 						MinecraftForge.EVENT_BUS.post(new ChunkEvent.Load(levelchunk));
 					} finally {
 						((ExtendedChunkHolder) chunkHolder).setCurrentlyLoadingWorldChunk(null);
@@ -173,11 +171,13 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 			var10000.send(ChunkTaskPrioritySystem.createMessage(task, var10002, chunkHolder::getLevel));
 		});
 	}
+
 	/*
-	@Inject(method = "method_17227", at = @At("TAIL"))
+	@Inject(method = "method_17227", at = @At(value = "TAIL", target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z", remap = false, shift = At.Shift.BEFORE))
 	private void onChunkLoad(ChunkHolder chunkHolder, Chunk protoChunk, CallbackInfoReturnable<Chunk> callbackInfoReturnable) {
 		// We fire the event at TAIL since the chunk is guaranteed to be a WorldChunk then.
 		ServerChunkEvents.CHUNK_LOAD.invoker().onChunkLoad(this.world, (WorldChunk) callbackInfoReturnable.getReturnValue());
 	}
 	 */
+
 }
