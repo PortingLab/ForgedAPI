@@ -48,6 +48,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static net.minecraft.server.world.ThreadedAnvilChunkStorage.addEntitiesFromNbt;
+
 @Mixin(value = ThreadedAnvilChunkStorage.class, priority = 10)
 public abstract class ThreadedAnvilChunkStorageMixin {
 	@Shadow
@@ -65,7 +67,7 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 	@Shadow @Final private MessageListener<ChunkTaskPrioritySystem.Task<Runnable>> mainExecutor;
 
 	//@Shadow
-	//protected static void addEntitiesFromNbt(ServerWorld world, List<NbtCompound> nbt) { }
+	//protected abstract void addEntitiesFromNbt(ServerWorld world, List<NbtCompound> nbt);
 
 	// Chunk (Un)Load events, An explanation:
 	// Must of this code is wrapped inside of futures and consumers, so it's generally a mess.
@@ -132,7 +134,6 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 	 * @author Kasualix, TexTrue
 	 * @reason insert event invoker
 	 */
-	/*
 	@Overwrite
 	private CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>> convertToFullChunk(ChunkHolder chunkHolder) {
 		CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>> completablefuture = chunkHolder.getFutureFor(ChunkStatus.FULL.getPrevious());
@@ -178,7 +179,6 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 			var10000.send(ChunkTaskPrioritySystem.createMessage(task, var10002, chunkHolder::getLevel));
 		});
 	}
-	 */
 
 	/*
 	@Inject(method = "method_17227", at = @At(value = "TAIL", target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z", remap = false, shift = At.Shift.BEFORE))
