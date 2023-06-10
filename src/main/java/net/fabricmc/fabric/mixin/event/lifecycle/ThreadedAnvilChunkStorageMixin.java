@@ -26,6 +26,7 @@ import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.longs.Long2LongMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongSet;
+import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.*;
@@ -43,6 +44,9 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ThreadedAnvilChunkStorage.class, priority = 10)
 public abstract class ThreadedAnvilChunkStorageMixin {
@@ -59,7 +63,13 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 	@Shadow @Final private Queue<Runnable> unloadTaskQueue;
 	@Shadow @Final private Long2LongMap chunkToNextSaveTimeMs;
 	@Shadow @Final private MessageListener<ChunkTaskPrioritySystem.Task<Runnable>> mainExecutor;
-	@Shadow protected abstract void addEntitiesFromNbt(ServerWorld world, List<NbtCompound> nbt);
+
+	@Shadow
+	protected static void addEntitiesFromNbt(ServerWorld world, List<NbtCompound> nbt) {
+		if (!nbt.isEmpty()) {
+			world.addEntities(EntityType.streamFromNbt(nbt, world));
+		}
+	}
 
 	// Chunk (Un)Load events, An explanation:
 	// Must of this code is wrapped inside of futures and consumers, so it's generally a mess.
