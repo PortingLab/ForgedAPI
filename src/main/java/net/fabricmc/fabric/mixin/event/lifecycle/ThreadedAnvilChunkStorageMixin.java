@@ -65,11 +65,7 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 	@Shadow @Final private MessageListener<ChunkTaskPrioritySystem.Task<Runnable>> mainExecutor;
 
 	@Shadow
-	protected static void addEntitiesFromNbt(ServerWorld world, List<NbtCompound> nbt) {
-		if (!nbt.isEmpty()) {
-			world.addEntities(EntityType.streamFromNbt(nbt, world));
-		}
-	}
+	protected static void addEntitiesFromNbt(ServerWorld world, List<NbtCompound> nbt) { }
 
 	// Chunk (Un)Load events, An explanation:
 	// Must of this code is wrapped inside of futures and consumers, so it's generally a mess.
