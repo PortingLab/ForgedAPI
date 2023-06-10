@@ -59,7 +59,7 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 	@Shadow @Final private Queue<Runnable> unloadTaskQueue;
 	@Shadow @Final private Long2LongMap chunkToNextSaveTimeMs;
 	@Shadow @Final private MessageListener<ChunkTaskPrioritySystem.Task<Runnable>> mainExecutor;
-	@Shadow @Final protected abstract void addEntitiesFromNbt(ServerWorld world, List<NbtCompound> nbt);
+	@Shadow protected abstract void addEntitiesFromNbt(ServerWorld world, List<NbtCompound> nbt);
 
 	// Chunk (Un)Load events, An explanation:
 	// Must of this code is wrapped inside of futures and consumers, so it's generally a mess.
