@@ -10,7 +10,6 @@ version = "${project.mod_version}+${project.minecraft_version}"
 group = project.maven_group
 
 loom {
-    accessWidenerPath = file("src/main/resources/forgedapi.accesswidener")
     forge {
         mixinConfigs = [
                 "fabric-lifecycle-events-v1.mixins.json",

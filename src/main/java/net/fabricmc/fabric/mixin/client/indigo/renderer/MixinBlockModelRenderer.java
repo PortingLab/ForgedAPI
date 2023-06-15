@@ -16,16 +16,10 @@
 
 package net.fabricmc.fabric.mixin.client.indigo.renderer;
 
-import java.util.BitSet;
-import java.util.Random;
-
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
+import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
+import net.fabricmc.fabric.impl.client.indigo.renderer.accessor.AccessBlockModelRenderer;
+import net.fabricmc.fabric.impl.client.indigo.renderer.aocalc.VanillaAoHelper;
+import net.fabricmc.fabric.impl.client.indigo.renderer.render.BlockRenderContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.block.BlockModelRenderer;
@@ -34,13 +28,16 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockRenderView;
-
-import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
-import net.fabricmc.fabric.impl.client.indigo.renderer.accessor.AccessBlockModelRenderer;
-import net.fabricmc.fabric.impl.client.indigo.renderer.aocalc.VanillaAoHelper;
-import net.fabricmc.fabric.impl.client.indigo.renderer.render.BlockRenderContext;
+import org.portinglab.fabricapi.api.ExtendedBlockModelRenderer;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
+import java.util.BitSet;
+import java.util.Random;
 
 @Mixin(BlockModelRenderer.class)
 public abstract class MixinBlockModelRenderer implements AccessBlockModelRenderer {
@@ -48,7 +45,7 @@ public abstract class MixinBlockModelRenderer implements AccessBlockModelRendere
 	public static BlockModelRenderer blockModelRenderer;
 
 	public void getQuadDimensions(BlockRenderView world, BlockState state, BlockPos pos, int[] vertexData, Direction face, @Nullable float[] box, BitSet flags) {
-		blockModelRenderer.getQuadDimensions(world, state, pos, vertexData, face, box, flags);
+		((ExtendedBlockModelRenderer)blockModelRenderer).froge$getQuadDimensions(world, state, pos, vertexData, face, box, flags);
 	};
 
 	private final ThreadLocal<BlockRenderContext> CONTEXTS = ThreadLocal.withInitial(BlockRenderContext::new);
