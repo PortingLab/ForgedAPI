@@ -153,6 +153,7 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 						((ExtendedChunkHolder) chunkHolder).setCurrentlyLoadingWorldChunk(levelchunk);
 						levelchunk.updateAllBlockEntities();
 						levelchunk.addChunkTickSchedulers(this.world);
+
 						ServerChunkEvents.CHUNK_LOAD.invoker().onChunkLoad(this.world, levelchunk);
 						MinecraftForge.EVENT_BUS.post(new ChunkEvent.Load(levelchunk));
 					} finally {

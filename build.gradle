@@ -12,6 +12,9 @@ group = project.maven_group
 loom {
     accessWidenerPath = file("src/main/resources/fabric-lifecycle-events-v1.accesswidener")
     forge {
+        convertAccessWideners = true
+        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+
         mixinConfigs = [
                 "fabric-lifecycle-events-v1.mixins.json",
                 "fabric-rendering-v1.mixins.json",
