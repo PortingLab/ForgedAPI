@@ -2,7 +2,7 @@ package org.portinglab.fabricapi.mixin;
 
 import net.minecraft.server.world.ServerLightingProvider;
 import net.minecraft.util.math.ChunkPos;
-import org.portinglab.fabricapi.api.ExtendedServerLightingProvider;
+import org.portinglab.fabricapi.api.extended.ExtendedServerLightingProvider;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 

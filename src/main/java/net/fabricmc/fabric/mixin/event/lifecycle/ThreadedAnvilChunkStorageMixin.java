@@ -16,33 +16,19 @@
 
 package net.fabricmc.fabric.mixin.event.lifecycle;
 
-import java.util.List;
-import java.util.Objects;
 import java.util.Queue;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
-import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.longs.Long2LongMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongSet;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.*;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.thread.MessageListener;
 import net.minecraft.world.chunk.*;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.ChunkEvent;
-import org.portinglab.fabricapi.api.ExtendedChunkHolder;
-import org.portinglab.fabricapi.api.ExtendedServerLightingProvider;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 
 @Mixin(value = ThreadedAnvilChunkStorage.class, priority = 10)
 public abstract class ThreadedAnvilChunkStorageMixin {

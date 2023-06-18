@@ -2,7 +2,7 @@ package org.portinglab.fabricapi.mixin;
 
 import net.minecraft.server.world.ChunkHolder;
 import net.minecraft.world.chunk.WorldChunk;
-import org.portinglab.fabricapi.api.ExtendedChunkHolder;
+import org.portinglab.fabricapi.api.extended.ExtendedChunkHolder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 

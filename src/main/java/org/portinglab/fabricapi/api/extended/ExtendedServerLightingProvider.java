@@ -1,4 +1,4 @@
-package org.portinglab.fabricapi.api;
+package org.portinglab.fabricapi.api.extended;
 
 import net.minecraft.util.math.ChunkPos;
 
