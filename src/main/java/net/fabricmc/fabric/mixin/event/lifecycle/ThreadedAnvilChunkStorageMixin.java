@@ -76,7 +76,6 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 	 * @author Kasualix, TexTrue
 	 * @reason insert event invoker
 	 */
-	/*
 	@Overwrite
 	private void tryUnloadChunk(long pos, ChunkHolder holder) {
 		CompletableFuture<Chunk> completablefuture = holder.getSavingFuture();
@@ -112,12 +111,6 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 			}
 
 		});
-	}
-	 */
-
-	@Inject(method = "method_18843", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z", shift = At.Shift.AFTER, remap = false))
-	private void onChunkUnload(ChunkHolder chunkHolder, CompletableFuture<Chunk> chunkFuture, long pos, Chunk chunk, CallbackInfo ci) {
-		ServerChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload(this.world, (WorldChunk) chunk);
 	}
 
 	/**
