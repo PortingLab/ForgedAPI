@@ -15,6 +15,7 @@ loom {
         mixinConfigs = [
                 "fabric-lifecycle-events-v1.mixins.json",
                 "fabric-rendering-v1.mixins.json",
+                "fabric-block-api-v1.mixins.json",
                 "forgedapi.mixins.json"
         ]
     }
