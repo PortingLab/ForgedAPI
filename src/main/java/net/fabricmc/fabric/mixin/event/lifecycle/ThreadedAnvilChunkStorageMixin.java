@@ -46,7 +46,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static net.minecraft.server.world.ThreadedAnvilChunkStorage.addEntitiesFromNbt;
 
@@ -66,9 +66,6 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 	@Shadow @Final private Long2LongMap chunkToNextSaveTimeMs;
 	@Shadow @Final private MessageListener<ChunkTaskPrioritySystem.Task<Runnable>> mainExecutor;
 
-	//@Shadow
-	//protected abstract void addEntitiesFromNbt(ServerWorld world, List<NbtCompound> nbt);
-
 	// Chunk (Un)Load events, An explanation:
 	// Must of this code is wrapped inside of futures and consumers, so it's generally a mess.
 
@@ -79,6 +76,7 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 	 * @author Kasualix, TexTrue
 	 * @reason insert event invoker
 	 */
+	/*
 	@Overwrite
 	private void tryUnloadChunk(long pos, ChunkHolder holder) {
 		CompletableFuture<Chunk> completablefuture = holder.getSavingFuture();
@@ -115,13 +113,12 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 
 		});
 	}
+	 */
 
-	/*
-	@Inject(method = "method_18843", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/WorldChunk;setLoadedToWorld(Z)V", shift = At.Shift.AFTER))
+	@Inject(method = "method_18843", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z", shift = At.Shift.AFTER))
 	private void onChunkUnload(ChunkHolder chunkHolder, CompletableFuture<Chunk> chunkFuture, long pos, Chunk chunk, CallbackInfo ci) {
 		ServerChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload(this.world, (WorldChunk) chunk);
 	}
-	 */
 
 	/**
 	 * Injection is inside of convertToFullChunk?
@@ -181,7 +178,7 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 	}
 
 	/*
-	@Inject(method = "method_17227", at = @At(value = "TAIL", target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z", remap = false, shift = At.Shift.BEFORE))
+	@Inject(method = "method_17227", at = @At(value = "TAIL"))
 	private void onChunkLoad(ChunkHolder chunkHolder, Chunk protoChunk, CallbackInfoReturnable<Chunk> callbackInfoReturnable) {
 		// We fire the event at TAIL since the chunk is guaranteed to be a WorldChunk then.
 		ServerChunkEvents.CHUNK_LOAD.invoker().onChunkLoad(this.world, (WorldChunk) callbackInfoReturnable.getReturnValue());
