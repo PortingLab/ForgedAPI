@@ -29,3 +29,10 @@ mandatory = true
 versionRange = "[1.18,)"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.forgedapi]]
+modId = "reforgium"
+mandatory = true
+versionRange = "[1.0.12,)"
+ordering = "NONE"
+side = "BOTH"

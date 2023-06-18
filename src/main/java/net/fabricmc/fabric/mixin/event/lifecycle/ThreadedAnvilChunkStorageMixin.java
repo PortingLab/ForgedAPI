@@ -30,21 +30,11 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(value = ThreadedAnvilChunkStorage.class, priority = 10)
+@Mixin(ThreadedAnvilChunkStorage.class)
 public abstract class ThreadedAnvilChunkStorageMixin {
 	@Shadow
 	@Final
 	private ServerWorld world;
-
-	@Shadow @Final private Long2ObjectLinkedOpenHashMap<ChunkHolder> chunksToUnload;
-	@Shadow protected abstract boolean save(Chunk chunk);
-	@Shadow @Final private LongSet loadedChunks;
-	@Shadow @Final private ServerLightingProvider lightingProvider;
-	@Shadow @Final private WorldGenerationProgressListener worldGenerationProgressListener;
-	@Shadow @Final private static Logger LOGGER;
-	@Shadow @Final private Queue<Runnable> unloadTaskQueue;
-	@Shadow @Final private Long2LongMap chunkToNextSaveTimeMs;
-	@Shadow @Final private MessageListener<ChunkTaskPrioritySystem.Task<Runnable>> mainExecutor;
 
 	// Chunk (Un)Load events, An explanation:
 	// Must of this code is wrapped inside of futures and consumers, so it's generally a mess.
