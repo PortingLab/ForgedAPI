@@ -124,6 +124,7 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 	 * @author Kasualix, TexTrue
 	 * @reason insert event invoker
 	 */
+	/*
 	@Overwrite
 	private CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>> convertToFullChunk(ChunkHolder chunkHolder) {
 		CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>> completablefuture = chunkHolder.getFutureFor(ChunkStatus.FULL.getPrevious());
@@ -170,6 +171,8 @@ public abstract class ThreadedAnvilChunkStorageMixin {
 			var10000.send(ChunkTaskPrioritySystem.createMessage(task, var10002, chunkHolder::getLevel));
 		});
 	}
+
+	 */
 
 	/*
 	@Inject(method = "method_17227", at = @At(value = "TAIL"))
